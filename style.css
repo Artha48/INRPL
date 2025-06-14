@@ -1,0 +1,306 @@
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol";
+      overflow: hidden;
+    }
+    .app-container {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      flex-direction: column;
+    }
+    /* Header */
+    .navbar {
+      background-color: #ffffff !important;
+      border: #dfdfdf 0.1rem solid;
+      border-radius: 6px;
+      height: 56px;
+      width: 100%;
+      flex-shrink: 0;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .header-icons button {
+      background: none;
+      border: none;
+      color: black;
+      font-size: 1.5rem;
+      position: relative;
+      cursor: pointer;
+    }
+    .header-icons button:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(0 0 0 / 0.3);
+      border-radius: 0.25rem;
+    }
+    .header-icons .badge {
+      font-size: 0.6rem;
+      line-height: 1;
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(50%, -50%);
+    }
+    .header-icons img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    /* Layout below header */
+    .content-wrapper {
+      display: flex;
+      flex-grow: 1;
+      height: calc(100vh - 56px);
+      overflow: hidden;
+    }
+
+    /* Sidebar normal */
+    .sidebar {
+      min-width: 70px !important;
+      max-width: 250px !important;
+      background: rgb(255, 255, 255);
+      border-right: 1px solid #dfdfdf;
+      width: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2rem 1.25rem;
+      transition: all 0.3s ease;
+      position: relative;
+      user-select: none;
+    }
+
+    /* Sidebar ketika collapsed */
+    .sidebar.collapsed {
+      width: 3.5rem !important;
+      min-width: 3.5rem;
+      max-width: 3.5rem;
+      padding: 2rem 0.75rem;
+      align-items: center;
+    }
+    .sidebar li:not(:last-child) {
+      margin-bottom: 0.2rem;
+      margin-top: 0.2rem;
+    }
+    .sidebar ul {
+      padding-left: 0;
+      margin-bottom: 0;
+      list-style: none;
+      width: 100%;
+    }
+    .sidebar li {
+      position: relative;
+      width: 100%;
+    }
+    .sidebar a {
+      color: #212529;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      font-weight: 400;
+      font-size: 1rem;
+      justify-content: flex-start;
+      white-space: nowrap;
+      overflow: hidden;
+      transition: color 0.3s ease, background-color 0.3s ease;
+      border-radius: 0.25rem;
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .sidebar a i {
+      min-width: 1.25rem;
+      text-align: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .sidebar a.active {
+      background-color: #ebebeb;
+      border-radius: 8px;
+      color: #0d6efd;
+      font-weight: 600;
+    }
+    .sidebar a.active i {
+      color: #0d6efd;
+    }
+    .sidebar a.inactive i {
+      color: #adb5bd;
+    }
+    .sidebar a.inactive {
+      color: #495057;
+    }
+    /* Hide text when collapsed */
+    .sidebar.collapsed a span {
+      display: none;
+    }
+    /* Tooltip on hover when collapsed */
+    .sidebar.collapsed a:hover::after {
+      content: attr(data-tooltip);
+      position: fixed;
+      left: 3.8rem;
+      background: #212529;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      white-space: nowrap;
+      font-size: 0.875rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1050;
+      pointer-events: none;
+      box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 0.15);
+    }
+    /* Sidebar footer */
+    .sidebar-footer {
+      margin-top: auto;
+      width: 100%;
+    }
+    .sidebar-footer a {
+      color: #6c757d;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      font-weight: 600;
+      justify-content: flex-start;
+      border-radius: 0.25rem;
+      padding: 0.5rem 0.75rem;
+      position: relative;
+      white-space: nowrap;
+      overflow: hidden;
+      transition: color 0.3s ease, background-color 0.3s ease;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .sidebar-footer a i {
+      min-width: 1.25rem;
+      text-align: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .sidebar.collapsed .sidebar-footer a span {
+      display: none;
+    }
+    .sidebar.collapsed .sidebar-footer a:hover::after {
+      content: attr(data-tooltip);
+      position: fixed;
+      left: 3.8rem;
+      background: #212529;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      white-space: nowrap;
+      font-size: 0.875rem;
+      bottom: 1.5rem;
+      z-index: 1050;
+      pointer-events: none;
+      box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 0.15);
+    }
+    /* Hover highlight */
+    .sidebar a:hover,
+    .sidebar a:hover i,
+    .sidebar-footer a:hover {
+      color: #0d6efd;
+      background-color: #ebebeb;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+
+    /* Main content */
+    main {
+      flex-grow: 1;
+      padding-top: 0.5rem;
+      overflow-y: auto;
+      background: #ffffff;
+    }
+    
+    table {
+      border-radius: 2rem !important;
+      overflow: hidden;
+    }
+    .ukuran-table-wrapper {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .barang-table-wrapper {
+      overflow-x: auto;
+      max-height: 500px;
+    }
+    .report-table-wrapper {
+      max-height: 350px;
+      overflow-y: auto;
+      margin-top: 1rem;
+    }
+    .controls-row {
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+        .sales-table-wrapper {
+    max-height: 350px;
+    overflow-y: auto;
+    margin-top: 1rem;
+  }
+  .controls-row {
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+        .staff-table-wrapper {
+      max-height: 350px;
+      overflow-y: auto;
+      margin-top: 1rem;
+    }
+    .password-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .password-group input {
+      padding-right: 2.5rem;
+    }
+    .password-toggle {
+      position: absolute;
+      right: 0.5rem;
+      cursor: pointer;
+      color: #6c757d;
+      user-select: none;
+    }
+    .password-toggle:hover {
+      color: #0d6efd;
+    }
+    .staff-photo {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+        .suppliers-table-wrapper,
+    .history-table-wrapper {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 2rem;
+    }
+    .suppliers-table tbody tr:hover,
+    .history-table-wrapper tbody tr:hover {
+      background-color: #e9f0ff;
+    }
+    .filter-row {
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
