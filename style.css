@@ -5,7 +5,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
                 "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
                 "Segoe UI Emoji", "Segoe UI Symbol";
-            overflow-x: hidden; /* Mencegah scrollbar horizontal pada mobile saat sidebar off-canvas */
+            overflow-x: hidden; /* Mencegah scrollbar horizontal saat sidebar tersembunyi */
         }
         .app-container {
             display: flex;
@@ -24,13 +24,13 @@
             flex-shrink: 0;
             padding-left: 1rem;
             padding-right: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Menjaga hamburger di kiri, ikon di kanan */
+            display: flex; /* Untuk flexbox agar bisa mengatur item di dalamnya */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Untuk meletakkan hamburger di kiri dan ikon di kanan */
         }
 
-        /* Hamburger Button (hanya terlihat di mobile) */
-        #hamburger-btn {
+        /* Hamburger Button in Navbar */
+        #hamburger-btn { /* ID baru untuk tombol hamburger di navbar */
             background: none;
             border: none;
             color: black;
@@ -39,9 +39,7 @@
             padding: 0.5rem;
             border-radius: 0.25rem;
             transition: background-color 0.3s ease;
-            margin-right: 1rem;
-            /* Secara default tampil di mobile */
-            display: block;
+            margin-right: 1rem; /* Beri sedikit jarak ke kanan */
         }
 
         #hamburger-btn:hover {
@@ -90,11 +88,11 @@
             position: relative;
         }
 
-        /* Sidebar - Default (untuk Mobile: Off-Canvas) */
+        /* Sidebar Off-Canvas */
         .sidebar {
             background: rgb(255, 255, 255);
             border-right: 1px solid #dfdfdf;
-            width: 250px;
+            width: 250px; /* Lebar sidebar */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -111,20 +109,20 @@
             box-sizing: border-box; /* Pastikan padding termasuk dalam lebar/tinggi */
         }
 
-        /* Sidebar aktif (terbuka) di Mobile */
+        /* Sidebar aktif (terbuka) */
         .sidebar.active {
             left: 0; /* Geser masuk ke dalam layar */
         }
 
-        /* Backdrop overlay saat sidebar terbuka (hanya di Mobile) */
+        /* Backdrop overlay saat sidebar terbuka */
         .sidebar-backdrop {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1039;
+            background-color: rgba(0, 0, 0, 0.5); /* Warna overlay transparan */
+            z-index: 1039; /* Di bawah sidebar, di atas konten utama */
             display: none; /* Sembunyikan secara default */
         }
 
@@ -132,9 +130,9 @@
             display: block; /* Tampilkan backdrop saat sidebar aktif */
         }
 
-        /* sidebar-header tidak digunakan untuk off-canvas ini, jadi sembunyikan */
+        /* Sidebar-header di dalam sidebar dihapus karena tombolnya pindah */
         .sidebar-header {
-            display: none;
+            display: none; /* Sembunyikan jika tidak ada elemen di dalamnya */
         }
 
         .sidebar ul {
@@ -142,12 +140,12 @@
             margin-bottom: 0;
             list-style: none;
             width: 100%;
-            padding-top: 0;
+            padding-top: 0; /* Pastikan tidak ada padding atas pada UL */
         }
         .sidebar li {
             position: relative;
             width: 100%;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.2rem; /* Tetap pertahankan jarak antar item */
             margin-top: 0.2rem;
         }
         .sidebar a {
@@ -187,18 +185,9 @@
             color: #495057;
         }
 
-        /* Tooltip tidak berlaku untuk off-canvas */
-        .sidebar a:hover::after {
-            display: none; /* Sembunyikan tooltip pada off-canvas */
-        }
-
-        .sidebar-footer {
-            display: none;
-        }
-
         /* Hover highlight */
         .sidebar a:hover,
-        .sidebar a:hover i {
+        .sidebar a:hover i { /* Hapus #collapse-btn:hover dari sini */
             color: #0d6efd;
             background-color: #ebebeb;
             border-radius: 8px;
@@ -209,10 +198,11 @@
         main {
             flex-grow: 1;
             padding-top: 0.5rem;
+            padding-left: 0,5rem;
+            padding-right: 0.5rem;
             overflow-y: auto;
             background: #ffffff;
-            /* Tidak ada margin-left di mobile */
-            transition: margin-left 0.3s ease-in-out; /* Transisi untuk desktop */
+            /* Tidak perlu margin-left karena sidebar off-canvas */
         }
 
         table {
@@ -222,49 +212,4 @@
         .ukuran-table-wrapper {
             max-height: 300px;
             overflow-y: auto;
-        }
-
-        /* ============================================== */
-        /* MEDIA QUERIES UNTUK DESKTOP VIEW */
-        /* Ukuran breakpoint standar untuk desktop biasanya 992px (Bootstrap 'lg') */
-        /* Anda bisa menyesuaikannya menjadi 768px (md) atau 1200px (xl) jika perlu */
-        /* ============================================== */
-        @media (min-width: 992px) {
-            /* Sembunyikan tombol hamburger di desktop */
-            #hamburger-btn {
-                display: none;
-            }
-
-            /* Sidebar untuk Desktop: Statis (selalu terlihat) */
-            .sidebar {
-                position: static; /* Kembali ke posisi statis dalam flex container */
-                left: 0; /* Pastikan selalu terlihat */
-                height: auto; /* Biarkan tinggi menyesuaikan konten */
-                width: 250px; /* Lebar default untuk desktop */
-                min-width: 250px;
-                max-width: 250px;
-                padding-top: 1rem; /* Kembali ke padding normal karena tidak ada navbar di atasnya lagi */
-                border-right: 1px solid #dfdfdf;
-                flex-shrink: 0;
-            }
-
-            /* Sembunyikan backdrop di desktop */
-            .sidebar-backdrop {
-                display: none !important;
-            }
-
-            /* Konten utama geser ke kanan untuk memberi ruang sidebar */
-            .content-wrapper {
-                /* Karena sidebar statis sekarang, content-wrapper akan memiliki 2 item flex */
-                flex-direction: row;
-            }
-
-            main {
-                margin-left: 0; /* Tidak perlu margin-left karena sidebar statis memakan ruang */
-            }
-
-            /* Tombol collapse/expand untuk desktop (opsional) */
-            /* Jika Anda ingin sidebar bisa di-collapse di desktop, Anda perlu menambahkan kembali
-               tombol collapse ke dalam sidebar dan mengelola class 'collapsed' dengan JS */
-            /* Untuk contoh ini, saya asumsikan sidebar desktop selalu expanded */
         }
