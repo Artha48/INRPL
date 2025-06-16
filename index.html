@@ -1,447 +1,527 @@
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard</title>
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-    rel="stylesheet"
-  />
-  <style>
-    body, html {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
-        "Segoe UI Emoji", "Segoe UI Symbol";
-      overflow: hidden;
-    }
-    .app-container {
-      display: flex;
-      height: 100vh;
-      width: 100vw;
-      flex-direction: column;
-    }
-    /* Header */
-    .navbar {
-      background-color: #ffffff !important;
-      border: #dfdfdf 0.1rem solid;
-      border-radius: 6px;
-      height: 56px;
-      width: 100%;
-      flex-shrink: 0;
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-    .header-icons {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .header-icons button {
-      background: none;
-      border: none;
-      color: black;
-      font-size: 1.5rem;
-      position: relative;
-      cursor: pointer;
-    }
-    .header-icons button:focus {
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(0 0 0 / 0.3);
-      border-radius: 0.25rem;
-    }
-    .header-icons .badge {
-      font-size: 0.6rem;
-      line-height: 1;
-      position: absolute;
-      top: 0;
-      right: 0;
-      transform: translate(50%, -50%);
-    }
-    .header-icons img {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-    }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard</title>
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    />
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+        rel="stylesheet"
+    />
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+                "Segoe UI Emoji", "Segoe UI Symbol";
+            overflow-x: hidden; /* Mencegah scrollbar horizontal pada mobile saat sidebar off-canvas */
+        }
+        .app-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            flex-direction: column;
+        }
 
-    /* Layout below header */
-    .content-wrapper {
-      display: flex;
-      flex-grow: 1;
-      height: calc(100vh - 56px);
-      overflow: hidden;
-    }
+        /* Header / Navbar */
+        .navbar {
+            background-color: #ffffff !important;
+            border: #dfdfdf 0.1rem solid;
+            border-radius: 6px;
+            height: 56px;
+            width: 100%;
+            flex-shrink: 0;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Menjaga hamburger di kiri, ikon di kanan */
+        }
 
-    /* Sidebar normal */
-    .sidebar {
-      min-width: 70px !important;
-      max-width: 250px !important;
-      background: rgb(255, 255, 255);
-      border-right: 1px solid #dfdfdf;
-      width: 250px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 2rem 1.25rem;
-      transition: all 0.3s ease;
-      position: relative;
-      user-select: none;
-    }
+        /* Hamburger Button (hanya terlihat di mobile) */
+        #hamburger-btn {
+            background: none;
+            border: none;
+            color: black;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            transition: background-color 0.3s ease;
+            margin-right: 1rem;
+            /* Secara default tampil di mobile */
+            display: block;
+        }
 
-    /* Sidebar ketika collapsed */
-    .sidebar.collapsed {
-      width: 3.5rem !important;
-      min-width: 3.5rem;
-      max-width: 3.5rem;
-      padding: 2rem 0.75rem;
-      align-items: center;
-    }
-    .sidebar li:not(:last-child) {
-      margin-bottom: 0.2rem;
-      margin-top: 0.2rem;
-    }
-    .sidebar ul {
-      padding-left: 0;
-      margin-bottom: 0;
-      list-style: none;
-      width: 100%;
-    }
-    .sidebar li {
-      position: relative;
-      width: 100%;
-    }
-    .sidebar a {
-      color: #212529;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.5rem 0.75rem;
-      font-weight: 400;
-      font-size: 1rem;
-      justify-content: flex-start;
-      white-space: nowrap;
-      overflow: hidden;
-      transition: color 0.3s ease, background-color 0.3s ease;
-      border-radius: 0.25rem;
-      position: relative;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .sidebar a i {
-      min-width: 1.25rem;
-      text-align: center;
-      font-size: 1.25rem;
-      flex-shrink: 0;
-    }
-    .sidebar a.active {
-      background-color: #ebebeb;
-      border-radius: 8px;
-      color: #0d6efd;
-      font-weight: 600;
-    }
-    .sidebar a.active i {
-      color: #0d6efd;
-    }
-    .sidebar a.inactive i {
-      color: #adb5bd;
-    }
-    .sidebar a.inactive {
-      color: #495057;
-    }
-    /* Hide text when collapsed */
-    .sidebar.collapsed a span {
-      display: none;
-    }
-    /* Tooltip on hover when collapsed */
-    .sidebar.collapsed a:hover::after {
-      content: attr(data-tooltip);
-      position: fixed;
-      left: 3.8rem;
-      background: #212529;
-      color: white;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
-      white-space: nowrap;
-      font-size: 0.875rem;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 1050;
-      pointer-events: none;
-      box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 0.15);
-    }
-    /* Sidebar footer */
-    .sidebar-footer {
-      margin-top: auto;
-      width: 100%;
-    }
-    .sidebar-footer a {
-      color: #6c757d;
-      font-size: 0.875rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      cursor: pointer;
-      font-weight: 600;
-      justify-content: flex-start;
-      border-radius: 0.25rem;
-      padding: 0.5rem 0.75rem;
-      position: relative;
-      white-space: nowrap;
-      overflow: hidden;
-      transition: color 0.3s ease, background-color 0.3s ease;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .sidebar-footer a i {
-      min-width: 1.25rem;
-      text-align: center;
-      font-size: 1.25rem;
-      flex-shrink: 0;
-    }
-    .sidebar.collapsed .sidebar-footer a span {
-      display: none;
-    }
-    .sidebar.collapsed .sidebar-footer a:hover::after {
-      content: attr(data-tooltip);
-      position: fixed;
-      left: 3.8rem;
-      background: #212529;
-      color: white;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
-      white-space: nowrap;
-      font-size: 0.875rem;
-      bottom: 1.5rem;
-      z-index: 1050;
-      pointer-events: none;
-      box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 0.15);
-    }
-    /* Hover highlight */
-    .sidebar a:hover,
-    .sidebar a:hover i,
-    .sidebar-footer a:hover {
-      color: #0d6efd;
-      background-color: #ebebeb;
-      border-radius: 8px;
-      text-decoration: none;
-    }
+        #hamburger-btn:hover {
+            background-color: #ebebeb;
+        }
 
-    /* Main content */
-    main {
-      flex-grow: 1;
-      padding-top: 0.5rem;
-      overflow-y: auto;
-      background: #ffffff;
-    }
-    
-    table {
-      border-radius: 2rem !important;
-      overflow: hidden;
-    }
-    .barang-table-wrapper {
-      overflow-x: auto;
-      max-height: 500px;
-    }
-  </style>
+        .header-icons {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .header-icons button {
+            background: none;
+            border: none;
+            color: black;
+            font-size: 1.5rem;
+            position: relative;
+            cursor: pointer;
+        }
+        .header-icons button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0 0 0 / 0.3);
+            border-radius: 0.25rem;
+        }
+        .header-icons .badge {
+            font-size: 0.6rem;
+            line-height: 1;
+            position: absolute;
+            top: 0;
+            right: 0;
+            transform: translate(50%, -50%);
+        }
+        .header-icons img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Layout below header */
+        .content-wrapper {
+            display: flex;
+            flex-grow: 1;
+            height: calc(100vh - 56px);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Sidebar - Default (untuk Mobile: Off-Canvas) */
+        .sidebar {
+            background: rgb(255, 255, 255);
+            border-right: 1px solid #dfdfdf;
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1rem 1.25rem 2rem;
+            position: fixed; /* Menjadikan sidebar melayang */
+            top: 0; /* Mulai dari atas viewport */
+            left: -250px; /* Sembunyikan di luar layar */
+            height: 100%; /* Ambil seluruh tinggi viewport */
+            z-index: 1040; /* Di atas backdrop, di bawah modal */
+            transition: left 0.3s ease-in-out; /* Transisi untuk animasi geser */
+            user-select: none;
+            flex-shrink: 0;
+            padding-top: 56px; /* Memberi ruang di atas agar tidak tumpang tindih dengan navbar */
+            box-sizing: border-box; /* Pastikan padding termasuk dalam lebar/tinggi */
+        }
+
+        /* Sidebar aktif (terbuka) di Mobile */
+        .sidebar.active {
+            left: 0; /* Geser masuk ke dalam layar */
+        }
+
+        /* Backdrop overlay saat sidebar terbuka (hanya di Mobile) */
+        .sidebar-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1039;
+            display: none; /* Sembunyikan secara default */
+        }
+
+        .sidebar.active + .sidebar-backdrop {
+            display: block; /* Tampilkan backdrop saat sidebar aktif */
+        }
+
+        /* sidebar-header tidak digunakan untuk off-canvas ini, jadi sembunyikan */
+        .sidebar-header {
+            display: none;
+        }
+
+        .sidebar ul {
+            padding-left: 0;
+            margin-bottom: 0;
+            list-style: none;
+            width: 100%;
+            padding-top: 0;
+        }
+        .sidebar li {
+            position: relative;
+            width: 100%;
+            margin-bottom: 0.2rem;
+            margin-top: 0.2rem;
+        }
+        .sidebar a {
+            color: #212529;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            font-weight: 400;
+            font-size: 1rem;
+            justify-content: flex-start;
+            white-space: nowrap;
+            overflow: hidden;
+            transition: color 0.3s ease, background-color 0.3s ease;
+            border-radius: 0.25rem;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .sidebar a i {
+            min-width: 1.25rem;
+            text-align: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        .sidebar a.active {
+            background-color: #ebebeb;
+            border-radius: 8px;
+            color: #0d6efd;
+            font-weight: 600;
+        }
+        .sidebar a.inactive i {
+            color: #adb5bd;
+        }
+        .sidebar a.inactive {
+            color: #495057;
+        }
+
+        /* Tooltip tidak berlaku untuk off-canvas */
+        .sidebar a:hover::after {
+            display: none; /* Sembunyikan tooltip pada off-canvas */
+        }
+
+        .sidebar-footer {
+            display: none;
+        }
+
+        /* Hover highlight */
+        .sidebar a:hover,
+        .sidebar a:hover i {
+            color: #0d6efd;
+            background-color: #ebebeb;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        /* Main content */
+        main {
+            flex-grow: 1;
+            padding-top: 0.5rem;
+            overflow-y: auto;
+            background: #ffffff;
+            /* Tidak ada margin-left di mobile */
+            transition: margin-left 0.3s ease-in-out; /* Transisi untuk desktop */
+        }
+
+        table {
+            border-radius: 2rem !important;
+            overflow: hidden;
+        }
+        .ukuran-table-wrapper {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        /* ============================================== */
+        /* MEDIA QUERIES UNTUK DESKTOP VIEW */
+        /* Ukuran breakpoint standar untuk desktop biasanya 992px (Bootstrap 'lg') */
+        /* Anda bisa menyesuaikannya menjadi 768px (md) atau 1200px (xl) jika perlu */
+        /* ============================================== */
+        @media (min-width: 992px) {
+            /* Sembunyikan tombol hamburger di desktop */
+            #hamburger-btn {
+                display: none;
+            }
+
+            /* Sidebar untuk Desktop: Statis (selalu terlihat) */
+            .sidebar {
+                position: static; /* Kembali ke posisi statis dalam flex container */
+                left: 0; /* Pastikan selalu terlihat */
+                height: auto; /* Biarkan tinggi menyesuaikan konten */
+                width: 250px; /* Lebar default untuk desktop */
+                min-width: 250px;
+                max-width: 250px;
+                padding-top: 1rem; /* Kembali ke padding normal karena tidak ada navbar di atasnya lagi */
+                border-right: 1px solid #dfdfdf;
+                flex-shrink: 0;
+            }
+
+            /* Sembunyikan backdrop di desktop */
+            .sidebar-backdrop {
+                display: none !important;
+            }
+
+            /* Konten utama geser ke kanan untuk memberi ruang sidebar */
+            .content-wrapper {
+                /* Karena sidebar statis sekarang, content-wrapper akan memiliki 2 item flex */
+                /* flex-direction: row; (ini default untuk flex) */
+            }
+
+            main {
+                margin-left: 0; /* Tidak perlu margin-left karena sidebar statis memakan ruang */
+            }
+
+            /* Tombol collapse/expand untuk desktop (opsional) */
+            /* Jika Anda ingin sidebar bisa di-collapse di desktop, Anda perlu menambahkan kembali
+               tombol collapse ke dalam sidebar dan mengelola class 'collapsed' dengan JS */
+            /* Untuk contoh ini, saya asumsikan sidebar desktop selalu expanded */
+        }
+    </style>
 </head>
 <body>
-  <div class="app-container">
-    <div class="content-wrapper">
-      <!-- Sidebar -->
-      <nav id="sidebar" class="sidebar" aria-label="Sidebar navigation">
-        <ul>
-            <a href="#" class="inactive" data-tooltip="Home" tabindex="0">
-              <i class="bi bi-house"></i><span>Home</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="active" data-tooltip="Inventory" tabindex="0">
-              <i class="bi bi-box-seam"></i><span>Inventory</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="inactive" data-tooltip="Suppliers" tabindex="0">
-              <i class="bi bi-truck"></i><span>Suppliers</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="inactive" data-tooltip="Sales" tabindex="0">
-              <i class="bi bi-coin"></i><span>Sales</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="inactive" data-tooltip="Reports" tabindex="0">
-              <i class="bi bi-file-earmark-text"></i><span>Reports</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="inactive" data-tooltip="Staff" tabindex="0">
-              <i class="bi bi-people"></i><span>Staff</span>
-            </a>
-          </li>
-        </ul>
-        <div class="sidebar-footer">
-          <a href="#" id="collapse-btn" data-tooltip="Collapse" tabindex="0">
-            <i class="bi bi-arrow-left"></i><span>Collapse</span>
-          </a>
-        </div>
-      </nav>
+    <div class="app-container">
+        <nav class="navbar navbar-light">
+            <button id="hamburger-btn" aria-label="Open Sidebar" tabindex="0">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="header-icons">
+                <button class="btn-bell" type="button" aria-label="Notifications" title="Notifications">
+                    <i class="bi bi-bell"></i>
+                </button>
+                <button type="button" aria-label="User profile" title="User profile" class="p-0 border-0 bg-transparent">
+                    <img
+                        alt="User avatar icon, placeholder image"
+                        src="https://storage.googleapis.com/a1aa/image/397a00f8-075d-4b23-9bff-bdc5eec82293.jpg"
+                        width="32"
+                        height="32"
+                        class="rounded-circle"
+                    />
+                </button>
+            </div>
+        </nav>
 
-      <!-- Main content -->
-        <main role="main" tabindex="0">
-        <div class="container-fluid">
-        <nav class="navbar navbar-light d-flex justify-content-end">
-      <div class="header-icons">
-        <button class="btn-bell" type="button" aria-label="Notifications" title="Notifications">
-          <i class="bi bi-bell"></i>
-          
-        </button>
-        <button type="button" aria-label="User profile" title="User profile" class="p-0 border-0 bg-transparent">
-          <img
-            alt="User avatar icon, placeholder image"
-            src="https://storage.googleapis.com/a1aa/image/397a00f8-075d-4b23-9bff-bdc5eec82293.jpg"
-            width="32"
-            height="32"
-            class="rounded-circle"
-          />
-        </button>
-      </div>
-    </nav>
-       
-          <h2 class="fw-bold mt-2">Inventory barang</h2>
-<!-- Filter & Search Row -->
-<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-  <!-- Search Bar -->
-  <div class="input-group" style="width: 100%;">
-    <span class="input-group-text bg-white border-end-0">
-      <i class="bi bi-search"></i>
-    </span>
-    <input type="text" class="form-control border-start-0" placeholder="Cari produk...">
-  </div>
+        <div class="content-wrapper">
+            <nav id="sidebar" class="sidebar" aria-label="Sidebar navigation">
+                <ul>
+                    <li>
+                        <a href="home.html" class="active" data-tooltip="Home" tabindex="0">
+                            <i class="bi bi-house"></i><span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="inventory.html" class="inactive" data-tooltip="Inventory" tabindex="0">
+                            <i class="bi bi-box-seam"></i><span>Inventory</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="inactive" data-tooltip="Category" tabindex="0">
+                            <i class="bi bi-grid"></i><span>Category</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="suppliers.html" class="inactive" data-tooltip="Suppliers" tabindex="0">
+                            <i class="bi bi-truck"></i><span>Suppliers</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="sales.html" class="inactive" data-tooltip="Sales" tabindex="0">
+                            <i class="bi bi-coin"></i><span>Sales</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="report.html" class="inactive" data-tooltip="Reports" tabindex="0">
+                            <i class="bi bi-file-earmark-text"></i><span>Reports</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="staff.html" class="inactive" data-tooltip="Staff" tabindex="0">
+                            <i class="bi bi-people"></i><span>Staff</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-backdrop" id="sidebar-backdrop"></div> <main role="main" tabindex="0">
+                <div class="container-fluid">
+                    <h2 class="fw-bold mt-2">Dashboard</h2>
+                    <p class="fs-5">Halo, (Nama user)!</p>
+                    <p class="text-muted">Tanggal hari ini: 16 Juni, 2025</p>
+                    <p><span class="fw-semibold text-primary">Jam:</span> 12:02 (makassar)</p>
 
-  <!-- Filter & Action (Dropdowns + Button) -->
-  <div class="d-flex align-items-center gap-2 flex-wrap mt-2">
-    <!-- Dropdowns dengan ukuran kecil -->
-    <select class="form-select form-select-sm" style="width: 120px;">
-      <option selected>Kategori</option>
-      <option>Makanan</option>
-      <option>Minuman</option>
-      <option>Obat</option>
-    </select>
+                    <h5 class="mb-2 fw-semibold">Barang yang akan Expired</h5>
+                    <div class="ukuran-table-wrapper">
+                        <table class="table table-hover table-bordered rounded suppliers-table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Product ID</th>
+                                    <th>Product Name</th>
+                                    <th>Stock</th>
+                                    <th>Expired Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ID123</td>
+                                    <td>Milk</td>
+                                    <td>10</td>
+                                    <td>2024-07-28</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ID456</td>
+                                    <td>Bread</td>
+                                    <td>5</td>
+                                    <td>2024-07-29</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ID789</td>
+                                    <td>Yogurt</td>
+                                    <td>8</td>
+                                    <td>2024-07-30</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-    <select class="form-select form-select-sm" style="width: 120px;">
-      <option selected>Supplier</option>
-      <option>Supplier A</option>
-      <option>Supplier B</option>
-    </select>
-
-    <select class="form-select form-select-sm" style="width: 150px;">
-      <option selected>Urutkan</option>
-      <option value="expired_asc">Kedaluwarsa Terdekat</option>
-      <option value="expired_desc">Kedaluwarsa Terjauh</option>
-    </select>
-
-    <!-- Tombol Tambah -->
-    <button class="btn btn-primary btn-sm">+ Tambah Produk</button>
-  </div>
-</div>
-          <div class="barang-table-wrapper">
-            <table class="table table-hover table-bordered rounded">
-              <thead class="table-light">
-                <tr>
-                  <th>Product ID</th>
-                  <th>Product Name</th>
-                  <th>Category</th>
-                  <th>Stock</th>
-                  <th>Expired Date</th>
-                  <th>Price</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1001</td>
-                  <td>Milk</td>
-                  <td> diary</td>
-                  <td>10</td>
-                  <td>2024-07-28</td>
-                  <td>Rp. 12.000</td>
-                    <td>
-                  <button class="btn btn-sm btn-outline-primary">
-                  Edit</button>
-                </td>
-                </tr>
-                <tr>
-                  <td>ID456</td>
-                  <td>Bread</td>
-                  <td> diary</td>
-                  <td>5</td>
-                  <td>2024-07-29</td>
-                  <td>Rp. 12.000</td>
-                  <td>
-                  <button class="btn btn-sm btn-outline-primary">
-                  Edit</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>ID789</td>
-                  <td>Yogurt</td>
-                  <td> diary</td>
-                  <td>8</td>
-                  <td>2024-07-30</td>
-                  <td>Rp. 12.000</td>
-                  <td>
-                  <button class="btn btn-sm btn-outline-primary">
-                  Edit</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          </div>
+                    <h5 class="mb-2 fw-semibold">Stok barang habis</h5>
+                    <div class="ukuran-table-wrapper">
+                        <table class="table table-hover table-bordered rounded suppliers-table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Product ID</th>
+                                    <th>Product Name</th>
+                                    <th>Stock</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ID101</td>
+                                    <td>Soda</td>
+                                    <td>0</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ID202</td>
+                                    <td>Cookies</td>
+                                    <td>0</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ID303</td>
+                                    <td>Shampoo</td>
+                                    <td>0</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
-</main>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    const sidebar = document.getElementById('sidebar');
-    const collapseBtn = document.getElementById('collapse-btn');
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+        const sidebarLinks = sidebar.querySelectorAll('ul li a');
 
-    function setCollapsed(collapsed) {
-      if (collapsed) {
-        sidebar.classList.add('collapsed');
-        collapseBtn.setAttribute('aria-expanded', 'false');
-        collapseBtn.setAttribute('data-tooltip', 'Expand');
-        collapseBtn.querySelector('i').classList.remove('bi-arrow-left');
-        collapseBtn.querySelector('i').classList.add('bi-arrow-right');
-        collapseBtn.querySelector('span').textContent = 'Expand';
-      } else {
-        sidebar.classList.remove('collapsed');
-        collapseBtn.setAttribute('aria-expanded', 'true');
-        collapseBtn.setAttribute('data-tooltip', 'Collapse');
-        collapseBtn.querySelector('i').classList.remove('bi-arrow-right');
-        collapseBtn.querySelector('i').classList.add('bi-arrow-left');
-        collapseBtn.querySelector('span').textContent = 'Collapse';
-      }
-    }
+        function openSidebar() {
+            sidebar.classList.add('active');
+            hamburgerBtn.setAttribute('aria-expanded', 'true');
+            // Menambahkan class ke body untuk mencegah scrolling saat sidebar terbuka
+            document.body.style.overflow = 'hidden';
+        }
 
-    collapseBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const isCollapsed = sidebar.classList.contains('collapsed');
-      setCollapsed(!isCollapsed);
-    });
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
+            // Mengembalikan scrolling ke body
+            document.body.style.overflow = '';
+        }
 
-    // Initialize state (expanded)
-    setCollapsed(false);
-  </script>
+        // Ketika tombol hamburger di navbar diklik, buka sidebar
+        hamburgerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Hanya buka sidebar jika saat ini belum aktif
+            if (!sidebar.classList.contains('active')) {
+                openSidebar();
+            }
+        });
+
+        // Ketika backdrop diklik, tutup sidebar
+        sidebarBackdrop.addEventListener('click', () => {
+            closeSidebar();
+        });
+
+        // Ketika salah satu link di sidebar diklik, tutup sidebar
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (sidebar.classList.contains('active')) {
+                    closeSidebar();
+                }
+            });
+        });
+
+        // ==============================================
+        // LOGIKA RESPONSIVE DENGAN JAVASCRIPT
+        // Menangani perilaku sidebar saat resize/load
+        // ==============================================
+
+        const mediaQuery = window.matchMedia('(min-width: 992px)'); // Sesuaikan dengan breakpoint di CSS Anda
+
+        function handleMediaQueryChange(e) {
+            if (e.matches) {
+                // Tampilan Desktop ( >= 992px )
+                // Pastikan sidebar terlihat dan backdrop tersembunyi
+                sidebar.classList.remove('active'); // Pastikan off-canvas tidak aktif
+                sidebar.style.left = '0'; // Pastikan CSS statis diterapkan
+                sidebarBackdrop.style.display = 'none'; // Sembunyikan backdrop
+                document.body.style.overflow = ''; // Aktifkan scrolling body
+
+                // Sembunyikan tombol hamburger di desktop
+                hamburgerBtn.style.display = 'none';
+            } else {
+                // Tampilan Mobile ( < 992px )
+                // Pastikan sidebar tersembunyi dan tombol hamburger terlihat
+                sidebar.style.left = '-250px'; // Set sidebar ke posisi off-canvas
+                sidebar.classList.remove('active'); // Pastikan tidak aktif di mobile
+                sidebarBackdrop.style.display = 'none'; // Pastikan backdrop tersembunyi
+                document.body.style.overflow = ''; // Aktifkan scrolling body
+
+                // Tampilkan tombol hamburger di mobile
+                hamburgerBtn.style.display = 'block';
+            }
+        }
+
+        // Jalankan fungsi saat halaman dimuat pertama kali
+        handleMediaQueryChange(mediaQuery);
+
+        // Tambahkan event listener untuk mendeteksi perubahan ukuran layar
+        mediaQuery.addListener(handleMediaQueryChange);
+
+    </script>
 </body>
 </html>
