@@ -1,3 +1,4 @@
+
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,254 +12,11 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
         rel="stylesheet"
     />
-    <link rel="stylesheet" href="#">
+    <link rel="stylesheet" href="style.css">
     <style>
-        body, html {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-                "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
-                "Segoe UI Emoji", "Segoe UI Symbol";
-            overflow-x: hidden; /* Mencegah scrollbar horizontal saat sidebar tersembunyi */
-        }
-        .app-container {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-            flex-direction: column;
-        }
+        /* .suppliers-table th, .suppliers-table td {
+            white-space: nowrap; /* Mencegah teks dalam sel wrap } */
 
-        /* Header / Navbar */
-        .navbar {
-            background-color: #ffffff !important;
-            border: #dfdfdf 0.1rem solid;
-            border-radius: 6px;
-            height: 56px;
-            width: 100%;
-            flex-shrink: 0;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            display: flex; /* Untuk flexbox agar bisa mengatur item di dalamnya */
-            align-items: center; /* Vertically center items */
-            justify-content: space-between; /* Untuk meletakkan hamburger di kiri dan ikon di kanan */
-        }
-
-        /* Hamburger Button in Navbar */
-        #hamburger-btn { /* ID baru untuk tombol hamburger di navbar */
-            background: none;
-            border: none;
-            color: black;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 0.25rem;
-            transition: background-color 0.3s ease;
-            margin-right: 1rem; /* Beri sedikit jarak ke kanan */
-        }
-
-        #hamburger-btn:hover {
-            background-color: #ebebeb;
-        }
-
-        .header-icons {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .header-icons button {
-            background: none;
-            border: none;
-            color: black;
-            font-size: 1.5rem;
-            position: relative;
-            cursor: pointer;
-        }
-        .header-icons button:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(0 0 0 / 0.3);
-            border-radius: 0.25rem;
-        }
-        .header-icons .badge {
-            font-size: 0.6rem;
-            line-height: 1;
-            position: absolute;
-            top: 0;
-            right: 0;
-            transform: translate(50%, -50%);
-        }
-        .header-icons img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        /* Layout below header */
-        .content-wrapper {
-            display: flex;
-            flex-grow: 1;
-            height: calc(100vh - 56px);
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Sidebar Off-Canvas */
-        .sidebar {
-            background: rgb(255, 255, 255);
-            border-right: 1px solid #dfdfdf;
-            width: 250px; /* Lebar sidebar */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 1rem 1.25rem 2rem;
-            position: fixed; /* Menjadikan sidebar melayang */
-            top: 0; /* Mulai dari atas viewport */
-            left: -250px; /* Sembunyikan di luar layar */
-            height: 100%; /* Ambil seluruh tinggi viewport */
-            z-index: 1040; /* Di atas backdrop, di bawah modal */
-            transition: left 0.3s ease-in-out; /* Transisi untuk animasi geser */
-            user-select: none;
-            flex-shrink: 0;
-            padding-top: 56px; /* Memberi ruang di atas agar tidak tumpang tindih dengan navbar */
-            box-sizing: border-box; /* Pastikan padding termasuk dalam lebar/tinggi */
-        }
-
-        /* Sidebar aktif (terbuka) */
-        .sidebar.active {
-            left: 0; /* Geser masuk ke dalam layar */
-        }
-
-        /* Backdrop overlay saat sidebar terbuka */
-        .sidebar-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.5); /* Warna overlay transparan */
-            z-index: 1039; /* Di bawah sidebar, di atas konten utama */
-            display: none; /* Sembunyikan secara default */
-        }
-
-        .sidebar.active + .sidebar-backdrop {
-            display: block; /* Tampilkan backdrop saat sidebar aktif */
-        }
-
-        /* Sidebar-header di dalam sidebar dihapus karena tombolnya pindah */
-        .sidebar-header {
-            display: none; /* Sembunyikan jika tidak ada elemen di dalamnya */
-        }
-
-        .sidebar ul {
-            padding-left: 0;
-            margin-bottom: 0;
-            list-style: none;
-            width: 100%;
-            padding-top: 0; /* Pastikan tidak ada padding atas pada UL */
-        }
-        .sidebar li {
-            position: relative;
-            width: 100%;
-            margin-bottom: 0.2rem; /* Tetap pertahankan jarak antar item */
-            margin-top: 0.2rem;
-        }
-        .sidebar a {
-            color: #212529;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 0.75rem;
-            font-weight: 400;
-            font-size: 1rem;
-            justify-content: flex-start;
-            white-space: nowrap;
-            overflow: hidden;
-            transition: color 0.3s ease, background-color 0.3s ease;
-            border-radius: 0.25rem;
-            position: relative;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .sidebar a i {
-            min-width: 1.25rem;
-            text-align: center;
-            font-size: 1.25rem;
-            flex-shrink: 0;
-        }
-        .sidebar a.active {
-            background-color: #ebebeb;
-            border-radius: 8px;
-            color: #0d6efd;
-            font-weight: 600;
-        }
-        .sidebar a.inactive i {
-            color: #adb5bd;
-        }
-        .sidebar a.inactive {
-            color: #495057;
-        }
-
-        /* Hover highlight */
-        .sidebar a:hover,
-        .sidebar a:hover i { /* Hapus #collapse-btn:hover dari sini */
-            color: #0d6efd;
-            background-color: #ebebeb;
-            border-radius: 8px;
-            text-decoration: none;
-        }
-
-        /* Main content */
-        main {
-            flex-grow: 1;
-            padding-top: 0.5rem;
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
-            overflow-y: auto;
-            background: #ffffff;
-            /* Tidak perlu margin-left karena sidebar off-canvas */
-        }
-
-        table {
-            border-radius: 2rem !important;
-            overflow: hidden;
-        }
-        .ukuran-table-wrapper {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        /* Media query untuk perilaku responsif (opsional) */
-        /* Anda bisa menentukan di sini apakah sidebar tetap off-canvas di desktop
-           atau berubah menjadi sidebar statis yang terlihat.
-           Untuk contoh ini, kita asumsikan off-canvas untuk semua ukuran.
-           Jika ingin statis di desktop, Anda perlu lebih banyak CSS override. */
-        /* Contoh untuk layar lebih besar, jika ingin sidebar tetap terlihat di desktop: */
-        /* @media (min-width: 992px) {
-            .sidebar {
-                position: static;
-                left: 0;
-                height: auto;
-                padding-top: 1rem; // Kembali ke padding normal jika tidak ada navbar di atasnya
-                flex-shrink: 0;
-                width: 250px;
-                min-width: 250px;
-                max-width: 250px;
-            }
-            .sidebar-backdrop {
-                display: none !important;
-            }
-            .content-wrapper {
-                justify-content: flex-start; // Default flex-start
-            }
-            main {
-                margin-left: 0; // Tidak ada margin jika sidebar statis
-            }
-            #hamburger-btn {
-                display: none; // Sembunyikan tombol hamburger di desktop
-            }
-        } */
     </style>
 </head>
 <body>
@@ -297,11 +55,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="inactive" data-tooltip="Category" tabindex="0">
-                            <i class="bi bi-grid"></i><span>Category</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="suppliers.html" class="inactive" data-tooltip="Suppliers" tabindex="0">
                             <i class="bi bi-truck"></i><span>Suppliers</span>
                         </a>
@@ -323,18 +76,18 @@
                     </li>
                 </ul>
             </nav>
-            <div class="sidebar-backdrop" id="sidebar-backdrop"></div> <main role="main" tabindex="0">
+            <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+            <main role="main" tabindex="0">
                 <div class="container-fluid">
                     <h2 class="fw-bold mt-3">Dashboard</h2>
                     <p class="fs-5">Halo, (Nama user)!</p>
-                    <p class="text-muted">Tanggal hari ini: 28 Juni, 2025</p>
-                    <p><span class="fw-semibold text-primary">Jam:</span> 20:05 (makassar)</p>
+                    <p id="current-date" class="text-muted">Tanggal hari ini: </p>
+                    <p><span class="fw-semibold text-primary">Jam:</span> <span id="current-time"></span> (WITA)</p>
 
                     <h5 class="mb-2 fw-semibold">Barang yang akan Expired</h5>
                     <div class="ukuran-table-wrapper">
                         <table class="table table-hover table-bordered rounded suppliers-table">
-                            <thead class="table-light">
-                                <tr>
+                            <thead class="table-light sticky-top"> <tr>
                                     <th>Product ID</th>
                                     <th>Product Name</th>
                                     <th>Stock</th>
@@ -342,42 +95,17 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="expiredProductsTableBody">
                                 <tr>
-                                    <td>ID123</td>
-                                    <td>Milk</td>
-                                    <td>10</td>
-                                    <td>2024-07-28</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">View</button>
-                                    </td>
+                                    <td colspan="5">Memuat data...</td>
                                 </tr>
-                                <tr>
-                                    <td>ID456</td>
-                                    <td>Bread</td>
-                                    <td>5</td>
-                                    <td>2024-07-29</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">View</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>ID789</td>
-                                    <td>Yogurt</td>
-                                    <td>8</td>
-                                    <td>2024-07-30</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">View</button>
-                                    </td>
-                                </tr>
-                            </tbody>
                         </table>
                     </div>
 
-                    <h5 class="mb-2 fw-semibold">Stok barang habis</h5>
+                    <h5 class="mb-2 fw-semibold mt-4">Stok barang habis</h5>
                     <div class="ukuran-table-wrapper">
                         <table class="table table-hover table-bordered rounded suppliers-table">
-                            <thead class="table-light">
+                            <thead class="table-light sticky-top">
                                 <tr>
                                     <th>Product ID</th>
                                     <th>Product Name</th>
@@ -385,32 +113,10 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="outOfStockTableBody">
                                 <tr>
-                                    <td>ID101</td>
-                                    <td>Soda</td>
-                                    <td>0</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">View</button>
-                                    </td>
+                                    <td colspan="4">Memuat data...</td>
                                 </tr>
-                                <tr>
-                                    <td>ID202</td>
-                                    <td>Cookies</td>
-                                    <td>0</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">View</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>ID303</td>
-                                    <td>Shampoo</td>
-                                    <td>0</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">View</button>
-                                    </td>
-                                </tr>
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -421,34 +127,31 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const sidebar = document.getElementById('sidebar');
-        const hamburgerBtn = document.getElementById('hamburger-btn'); // Ganti ID
+        const hamburgerBtn = document.getElementById('hamburger-btn');
         const sidebarBackdrop = document.getElementById('sidebar-backdrop');
         const sidebarLinks = sidebar.querySelectorAll('ul li a');
 
         function openSidebar() {
             sidebar.classList.add('active');
             hamburgerBtn.setAttribute('aria-expanded', 'true');
-            hamburgerBtn.setAttribute('data-tooltip', 'Close Sidebar'); // Tooltip untuk tombol hamburger
+            hamburgerBtn.setAttribute('data-tooltip', 'Close Sidebar');
         }
 
         function closeSidebar() {
             sidebar.classList.remove('active');
             hamburgerBtn.setAttribute('aria-expanded', 'false');
-            hamburgerBtn.setAttribute('data-tooltip', 'Open Sidebar'); // Tooltip untuk tombol hamburger
+            hamburgerBtn.setAttribute('data-tooltip', 'Open Sidebar');
         }
 
-        // Ketika tombol hamburger di navbar diklik, buka sidebar
         hamburgerBtn.addEventListener('click', (e) => {
             e.preventDefault();
             openSidebar();
         });
 
-        // Ketika backdrop diklik, tutup sidebar
         sidebarBackdrop.addEventListener('click', () => {
             closeSidebar();
         });
 
-        // Ketika salah satu link di sidebar diklik, tutup sidebar
         sidebarLinks.forEach(link => {
             link.addEventListener('click', () => {
                 if (sidebar.classList.contains('active')) {
@@ -457,13 +160,99 @@
             });
         });
 
-        // Opsional: Untuk responsif di desktop, Anda bisa membiarkan sidebar terbuka secara default
-        // atau menambahkan media query untuk JavaScript. Namun, untuk kasus off-canvas,
-        // biasanya sidebar akan selalu tersembunyi kecuali dibuka.
+        // Fungsi untuk memperbarui tanggal dan waktu
+        function updateDateTime() {
+            const now = new Date();
 
-        // Jika Anda ingin sidebar terbuka secara default di layar lebar, dan off-canvas di layar kecil,
-        // Anda perlu logic JavaScript yang lebih kompleks menggunakan `window.matchMedia`.
-        // Untuk saat ini, sidebar akan selalu off-canvas.
+            // Options for date formatting
+            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = now.toLocaleDateString('id-ID', dateOptions); // 'id-ID' untuk format Indonesia
+
+            // Options for time formatting
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            const formattedTime = now.toLocaleTimeString('id-ID', timeOptions); // 'id-ID' untuk format Indonesia
+
+            document.getElementById('current-date').textContent = `Tanggal hari ini: ${formattedDate}`;
+            document.getElementById('current-time').textContent = formattedTime;
+        }
+
+        // Panggil fungsi updateDateTime sekali saat halaman dimuat
+        updateDateTime();
+        // Kemudian panggil setiap detik untuk memperbarui waktu
+        setInterval(updateDateTime, 1000);
+
+        // --- FUNGSI UNTUK MEMUAT DATA DARI PHP API ---
+
+    // ... (kode sidebar dan tanggal/waktu yang sudah ada) ...
+
+    async function fetchExpiredProducts() {
+        try {
+            // Panggil api.php dengan parameter action=expired_products
+            const response = await fetch('./homeapi.php?action=expired_products');
+            const products = await response.json();
+            const tableBody = document.getElementById('expiredProductsTableBody');
+            tableBody.innerHTML = ''; // Bersihkan tabel sebelum mengisi ulang
+
+            if (products.length > 0) {
+                products.forEach(product => {
+                    const row = `
+                        <tr>
+                            <td>${product.product_id}</td>
+                            <td>${product.product_name}</td>
+                            <td>${product.current_stock}</td>
+                            <td>${product.expired_date}</td>
+                            <td><a href="inventory.html?product_id=${product.product_id}" class="btn btn-sm btn-outline-primary">View</a></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="5">Tidak ada barang yang akan expired dalam 6 bulan ke depan.</td></tr>';
+            }
+
+        } catch (error) {
+            console.error('Error fetching expired products:', error);
+            const tableBody = document.getElementById('expiredProductsTableBody');
+            tableBody.innerHTML = '<tr><td colspan="5">Gagal memuat data barang expired.</td></tr>';
+        }
+    }
+
+    async function fetchOutOfStockProducts() {
+        try {
+            // Panggil api.php dengan parameter action=out_of_stock_products
+            const response = await fetch('./homeapi.php?action=out_of_stock_products');
+            const products = await response.json();
+            const tableBody = document.getElementById('outOfStockTableBody');
+            tableBody.innerHTML = ''; // Bersihkan tabel sebelum mengisi ulang
+
+            if (products.length > 0) {
+                products.forEach(product => {
+                    const row = `
+                        <tr>
+                            <td>${product.product_id}</td>
+                            <td>${product.product_name}</td>
+                            <td>${product.current_stock}</td>
+                            <td><a href="inventory.html?product_id=${product.product_id}" class="btn btn-sm btn-outline-primary">View</a></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="4">Tidak ada barang yang stoknya habis.</td></tr>';
+            }
+
+        } catch (error) {
+            console.error('Error fetching out of stock products:', error);
+            const tableBody = document.getElementById('outOfStockTableBody');
+            tableBody.innerHTML = '<tr><td colspan="4">Gagal memuat data barang habis.</td></tr>';
+        }
+    }
+
+    // Panggil fungsi untuk memuat data saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchExpiredProducts();
+        fetchOutOfStockProducts();
+    });
     </script>
 </body>
 </html>
