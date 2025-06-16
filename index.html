@@ -11,6 +11,7 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
         rel="stylesheet"
     />
+    <link rel="stylesheet" href="#">
     <style>
         body, html {
             width: 100%;
@@ -19,7 +20,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
                 "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
                 "Segoe UI Emoji", "Segoe UI Symbol";
-            overflow-x: hidden; /* Mencegah scrollbar horizontal pada mobile saat sidebar off-canvas */
+            overflow-x: hidden; /* Mencegah scrollbar horizontal saat sidebar tersembunyi */
         }
         .app-container {
             display: flex;
@@ -38,13 +39,13 @@
             flex-shrink: 0;
             padding-left: 1rem;
             padding-right: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Menjaga hamburger di kiri, ikon di kanan */
+            display: flex; /* Untuk flexbox agar bisa mengatur item di dalamnya */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Untuk meletakkan hamburger di kiri dan ikon di kanan */
         }
 
-        /* Hamburger Button (hanya terlihat di mobile) */
-        #hamburger-btn {
+        /* Hamburger Button in Navbar */
+        #hamburger-btn { /* ID baru untuk tombol hamburger di navbar */
             background: none;
             border: none;
             color: black;
@@ -53,9 +54,7 @@
             padding: 0.5rem;
             border-radius: 0.25rem;
             transition: background-color 0.3s ease;
-            margin-right: 1rem;
-            /* Secara default tampil di mobile */
-            display: block;
+            margin-right: 1rem; /* Beri sedikit jarak ke kanan */
         }
 
         #hamburger-btn:hover {
@@ -104,11 +103,11 @@
             position: relative;
         }
 
-        /* Sidebar - Default (untuk Mobile: Off-Canvas) */
+        /* Sidebar Off-Canvas */
         .sidebar {
             background: rgb(255, 255, 255);
             border-right: 1px solid #dfdfdf;
-            width: 250px;
+            width: 250px; /* Lebar sidebar */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -125,20 +124,20 @@
             box-sizing: border-box; /* Pastikan padding termasuk dalam lebar/tinggi */
         }
 
-        /* Sidebar aktif (terbuka) di Mobile */
+        /* Sidebar aktif (terbuka) */
         .sidebar.active {
             left: 0; /* Geser masuk ke dalam layar */
         }
 
-        /* Backdrop overlay saat sidebar terbuka (hanya di Mobile) */
+        /* Backdrop overlay saat sidebar terbuka */
         .sidebar-backdrop {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1039;
+            background-color: rgba(0, 0, 0, 0.5); /* Warna overlay transparan */
+            z-index: 1039; /* Di bawah sidebar, di atas konten utama */
             display: none; /* Sembunyikan secara default */
         }
 
@@ -146,9 +145,9 @@
             display: block; /* Tampilkan backdrop saat sidebar aktif */
         }
 
-        /* sidebar-header tidak digunakan untuk off-canvas ini, jadi sembunyikan */
+        /* Sidebar-header di dalam sidebar dihapus karena tombolnya pindah */
         .sidebar-header {
-            display: none;
+            display: none; /* Sembunyikan jika tidak ada elemen di dalamnya */
         }
 
         .sidebar ul {
@@ -156,12 +155,12 @@
             margin-bottom: 0;
             list-style: none;
             width: 100%;
-            padding-top: 0;
+            padding-top: 0; /* Pastikan tidak ada padding atas pada UL */
         }
         .sidebar li {
             position: relative;
             width: 100%;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.2rem; /* Tetap pertahankan jarak antar item */
             margin-top: 0.2rem;
         }
         .sidebar a {
@@ -201,18 +200,9 @@
             color: #495057;
         }
 
-        /* Tooltip tidak berlaku untuk off-canvas */
-        .sidebar a:hover::after {
-            display: none; /* Sembunyikan tooltip pada off-canvas */
-        }
-
-        .sidebar-footer {
-            display: none;
-        }
-
         /* Hover highlight */
         .sidebar a:hover,
-        .sidebar a:hover i {
+        .sidebar a:hover i { /* Hapus #collapse-btn:hover dari sini */
             color: #0d6efd;
             background-color: #ebebeb;
             border-radius: 8px;
@@ -223,10 +213,11 @@
         main {
             flex-grow: 1;
             padding-top: 0.5rem;
+            padding-left: 0,5rem;
+            padding-right: 0.5rem;
             overflow-y: auto;
             background: #ffffff;
-            /* Tidak ada margin-left di mobile */
-            transition: margin-left 0.3s ease-in-out; /* Transisi untuk desktop */
+            /* Tidak perlu margin-left karena sidebar off-canvas */
         }
 
         table {
@@ -238,50 +229,36 @@
             overflow-y: auto;
         }
 
-        /* ============================================== */
-        /* MEDIA QUERIES UNTUK DESKTOP VIEW */
-        /* Ukuran breakpoint standar untuk desktop biasanya 992px (Bootstrap 'lg') */
-        /* Anda bisa menyesuaikannya menjadi 768px (md) atau 1200px (xl) jika perlu */
-        /* ============================================== */
-        @media (min-width: 992px) {
-            /* Sembunyikan tombol hamburger di desktop */
-            #hamburger-btn {
-                display: none;
-            }
-
-            /* Sidebar untuk Desktop: Statis (selalu terlihat) */
+        /* Media query untuk perilaku responsif (opsional) */
+        /* Anda bisa menentukan di sini apakah sidebar tetap off-canvas di desktop
+           atau berubah menjadi sidebar statis yang terlihat.
+           Untuk contoh ini, kita asumsikan off-canvas untuk semua ukuran.
+           Jika ingin statis di desktop, Anda perlu lebih banyak CSS override. */
+        /* Contoh untuk layar lebih besar, jika ingin sidebar tetap terlihat di desktop: */
+        /* @media (min-width: 992px) {
             .sidebar {
-                position: static; /* Kembali ke posisi statis dalam flex container */
-                left: 0; /* Pastikan selalu terlihat */
-                height: auto; /* Biarkan tinggi menyesuaikan konten */
-                width: 250px; /* Lebar default untuk desktop */
+                position: static;
+                left: 0;
+                height: auto;
+                padding-top: 1rem; // Kembali ke padding normal jika tidak ada navbar di atasnya
+                flex-shrink: 0;
+                width: 250px;
                 min-width: 250px;
                 max-width: 250px;
-                padding-top: 1rem; /* Kembali ke padding normal karena tidak ada navbar di atasnya lagi */
-                border-right: 1px solid #dfdfdf;
-                flex-shrink: 0;
             }
-
-            /* Sembunyikan backdrop di desktop */
             .sidebar-backdrop {
                 display: none !important;
             }
-
-            /* Konten utama geser ke kanan untuk memberi ruang sidebar */
             .content-wrapper {
-                /* Karena sidebar statis sekarang, content-wrapper akan memiliki 2 item flex */
-                flex-direction: row;
+                justify-content: flex-start; // Default flex-start
             }
-
             main {
-                margin-left: 0; /* Tidak perlu margin-left karena sidebar statis memakan ruang */
+                margin-left: 0; // Tidak ada margin jika sidebar statis
             }
-
-            /* Tombol collapse/expand untuk desktop (opsional) */
-            /* Jika Anda ingin sidebar bisa di-collapse di desktop, Anda perlu menambahkan kembali
-               tombol collapse ke dalam sidebar dan mengelola class 'collapsed' dengan JS */
-            /* Untuk contoh ini, saya asumsikan sidebar desktop selalu expanded */
-        }
+            #hamburger-btn {
+                display: none; // Sembunyikan tombol hamburger di desktop
+            }
+        } */
     </style>
 </head>
 <body>
@@ -350,8 +327,8 @@
                 <div class="container-fluid">
                     <h2 class="fw-bold mt-2">Dashboard</h2>
                     <p class="fs-5">Halo, (Nama user)!</p>
-                    <p class="text-muted">Tanggal hari ini: 16 Juni, 2025</p>
-                    <p><span class="fw-semibold text-primary">Jam:</span> 12:02 (makassar)</p>
+                    <p class="text-muted">Tanggal hari ini: 28 Juni, 2025</p>
+                    <p><span class="fw-semibold text-primary">Jam:</span> 20:05 (makassar)</p>
 
                     <h5 class="mb-2 fw-semibold">Barang yang akan Expired</h5>
                     <div class="ukuran-table-wrapper">
@@ -444,31 +421,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const sidebar = document.getElementById('sidebar');
-        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const hamburgerBtn = document.getElementById('hamburger-btn'); // Ganti ID
         const sidebarBackdrop = document.getElementById('sidebar-backdrop');
         const sidebarLinks = sidebar.querySelectorAll('ul li a');
 
         function openSidebar() {
             sidebar.classList.add('active');
             hamburgerBtn.setAttribute('aria-expanded', 'true');
-            // Menambahkan class ke body untuk mencegah scrolling saat sidebar terbuka
-            document.body.style.overflow = 'hidden';
+            hamburgerBtn.setAttribute('data-tooltip', 'Close Sidebar'); // Tooltip untuk tombol hamburger
         }
 
         function closeSidebar() {
             sidebar.classList.remove('active');
             hamburgerBtn.setAttribute('aria-expanded', 'false');
-            // Mengembalikan scrolling ke body
-            document.body.style.overflow = '';
+            hamburgerBtn.setAttribute('data-tooltip', 'Open Sidebar'); // Tooltip untuk tombol hamburger
         }
 
         // Ketika tombol hamburger di navbar diklik, buka sidebar
         hamburgerBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            // Hanya buka sidebar jika saat ini belum aktif
-            if (!sidebar.classList.contains('active')) {
-                openSidebar();
-            }
+            openSidebar();
         });
 
         // Ketika backdrop diklik, tutup sidebar
@@ -485,43 +457,13 @@
             });
         });
 
-        // ==============================================
-        // LOGIKA RESPONSIVE DENGAN JAVASCRIPT
-        // Menangani perilaku sidebar saat resize/load
-        // ==============================================
+        // Opsional: Untuk responsif di desktop, Anda bisa membiarkan sidebar terbuka secara default
+        // atau menambahkan media query untuk JavaScript. Namun, untuk kasus off-canvas,
+        // biasanya sidebar akan selalu tersembunyi kecuali dibuka.
 
-        const mediaQuery = window.matchMedia('(min-width: 992px)'); // Sesuaikan dengan breakpoint di CSS Anda
-
-        function handleMediaQueryChange(e) {
-            if (e.matches) {
-                // Tampilan Desktop ( >= 992px )
-                // Pastikan sidebar terlihat dan backdrop tersembunyi
-                sidebar.classList.remove('active'); // Pastikan off-canvas tidak aktif
-                sidebar.style.left = '0'; // Pastikan CSS statis diterapkan
-                sidebarBackdrop.style.display = 'none'; // Sembunyikan backdrop
-                document.body.style.overflow = ''; // Aktifkan scrolling body
-
-                // Sembunyikan tombol hamburger di desktop
-                hamburgerBtn.style.display = 'none';
-            } else {
-                // Tampilan Mobile ( < 992px )
-                // Pastikan sidebar tersembunyi dan tombol hamburger terlihat
-                sidebar.style.left = '-250px'; // Set sidebar ke posisi off-canvas
-                sidebar.classList.remove('active'); // Pastikan tidak aktif di mobile
-                sidebarBackdrop.style.display = 'none'; // Pastikan backdrop tersembunyi
-                document.body.style.overflow = ''; // Aktifkan scrolling body
-
-                // Tampilkan tombol hamburger di mobile
-                hamburgerBtn.style.display = 'block';
-            }
-        }
-
-        // Jalankan fungsi saat halaman dimuat pertama kali
-        handleMediaQueryChange(mediaQuery);
-
-        // Tambahkan event listener untuk mendeteksi perubahan ukuran layar
-        mediaQuery.addListener(handleMediaQueryChange);
-
+        // Jika Anda ingin sidebar terbuka secara default di layar lebar, dan off-canvas di layar kecil,
+        // Anda perlu logic JavaScript yang lebih kompleks menggunakan `window.matchMedia`.
+        // Untuk saat ini, sidebar akan selalu off-canvas.
     </script>
 </body>
 </html>
